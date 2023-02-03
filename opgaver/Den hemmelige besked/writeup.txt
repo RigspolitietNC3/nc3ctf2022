@@ -1,0 +1,13 @@
+Man får en fil (uden efternavn) og en låst zipfil. 
+Filen indeholder koden til zipfilen, men den er skjult ved en base58 decoding og derefter med "udali menya" sat foran. 
+Det betyder "slet mig" på russisk. 
+Zipfilen indeholder en pcap, hvor flaget er skjult i timestampet i pakkerne i form af decimaler, der kan omkodes til flaget via en ASCII tabel. 
+
+Filen all_o5_y8r_nissebase_belong_to_us indeholder:
+"udali menya"aDtZjWevoYiXT4nxCQC43PuD5mmkVvJQcnz5CTyj2mgzxEx4J
+Fjern "udali menya" og base58 decode resten for at få:
+Koden til zipfilen er: brunk@gerMUMS
+Brug koden brunk@gerMUMS på zipfilen for at få en pcapfil.
+I pcapfilen er flaget gemt i de sidste tre tal i timestamp i form af ASCII decimaler.
+
+Flag: nc3{D0nt_dro9_10g1c_60m65}

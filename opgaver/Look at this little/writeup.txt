@@ -1,0 +1,14 @@
+Navn: Look at this little...
+Tekst: "Under ransagning af en nissesabotør fandt vores kvikke nisseagenter det her foto. Desværre er de ikke kvikke nok til at finde ud af, om der gemmer sig en hemmelig besked i billedet. Kan du hjælpe?"
+
+Man får en billedfil, der indeholder 3 dele af flaget gemt forskellige steder. 
+1. En tredjedel i exif-data under rights og encoded i base64. 
+2. En tredjedel på selve billedet på computerskærmen i baggrunden. 
+3. En tredjedel gemt via steghide og beskyttet af et kodeord, der kan findes på en post-it i baggrunden på billedet. 
+Sat korrekt sammen danner de tre dele flaget. 
+
+Første del af flaget kan findes ved at kigge på exifdata, fx med exiftool i linux. Under rights står der: bmMze25vdF9leGFjdGx5 som decoded fra base64 bliver til nc3{not_exactly
+Anden del af flaget kan læses ved at zoome ind på computerskærmen i baggrunden. Der står a_RAMbrandt
+Tredje del af flaget kan findes ved at bruge steghide info eller steghide extract på billedet. Her skal kodeordet "natskyggebryg" fra post-it'en på billedet anvendes for at extrahere en hemmelig fil ved navn "somethingsecret.txt". Den fil indeholder "5f 6e 6f 72 5f 56 41 4e 5f 67 6f 67 68 7d" som er hex for _nor_VAN_gogh}
+Sæt de tre stykker sammen, og du har flaget.
+

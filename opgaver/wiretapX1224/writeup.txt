@@ -1,0 +1,14 @@
+Navn: WiretapX1224
+Tekst: "En af vores nisseagenter har opsnappet denne fil fra en af Rigets fjender. Kan du hjælpe med at finde ud af om, den gemmer en hemmelig besked?"
+
+Man får en låst zip-fil, der først skal crackes, og dernæst har man en pcap, hvor der er gemt et flag. 
+Fremgangsmåde:
+Først skal man trække hashen ud af zipfilen. 
+sudo zip2john wiretapX1224.zip > ziphash.txt 
+Så skal hashen crackes med rockyou.txt.
+sudo john -wordlist=/usr/share/wordlists/rockyou.txt ziphash.txt
+kodeord til zipfilen: nisse914952338
+pcap-filen indeholder en masse støj, falske beskeder og et falsk flag. Selve flaget gemmer sig i ICMP-pakkernes id. Man skal dog filtrere de ICMP pakker fra, der har tekst gemt som en data-string i. Flaget skal også først decodes fra hex til decimal, før man har det human-readable flag.
+
+Flag:
+nc3{3ar_t0_the_W1RE}

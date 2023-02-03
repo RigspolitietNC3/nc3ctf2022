@@ -1,4 +1,4 @@
-# nc3ctf2022
+# NC3CTF2022
 
 NC3 har afholdt en [CTF](https://en.wikipedia.org/wiki/Capture_the_flag) siden 2017. I år fra den 1. december til den 15. december 2022. Dette gøres for at sætte fokus på IT-sikkerhed, og især gøre flere unge interesserede i en evt. karriere indenfor denne branche.
 
@@ -18,13 +18,6 @@ En CTF kan kort beskrives som en hackerkonkurrence, hvor det handler om at bryde
 Vinderen blev Brunnerne. Stort tillykke.
 
 Hele dage og sene nattetimer blev taget i brug når de mere end 1100 deltagere løste opgaver. Det var fedt at se for os, der stod bag konkurrencen. Hvis vi skal sige noget overordnet om konkurrencen, så er det at vi har prøvet at skabe nogle opgaver som vi selv ville have lyst til at løse. Tak til alle for opbakningen og glædelig jul!
-
-#nc3ctf2022
-
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
 
 
 # Opgaver
