@@ -48,3 +48,24 @@ Vi venter i år med at offentliggøre de officielle writeups til starten af 2023
 
 # Community Writeups:
 
+## Fra nissen96
+Lovens lange ARM
+https://nissen96.github.io/CTF-writeups/writeups/2022/NC3-CTF-2022/Lovens-lange-ARM.html
+
+Nissezonen
+https://nissen96.github.io/CTF-writeups/writeups/2022/NC3-CTF-2022/Nissezonen.html
+
+Rensdyrkartotek
+https://nissen96.github.io/CTF-writeups/writeups/2022/NC3-CTF-2022/Rensdyrkartotek.html
+
+Sparenissen
+https://nissen96.github.io/CTF-writeups/writeups/2022/NC3-CTF-2022/Sparenissen.html
+
+
+
+
+
+
+
+
+
