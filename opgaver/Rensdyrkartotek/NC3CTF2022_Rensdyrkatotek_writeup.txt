@@ -1,0 +1,112 @@
+NC3 CTF 2022 Sqlite Rensdyrkartotek
+
+Dette er en opgave der udfordrer deltagerne af CTF'en på SQLite filformatet.
+Det er meningen at man via den tilgængelige dokumentation på nettet skal kunne løse opgaven og få "aha" oplevelser ved at få ting frem eller vist igen via f.eks DB browser for SQLite.
+Den var beregnet som værende svær, da der var en del steps at gå igennem og opdage.
+Jeg havde ikke set andre CTF'er der lavede SQLite opgaver (udover min egen fra 2020 der omhandlede genskabelse af en enkelt rækkes slettet fire første bytes), så der var noget nyt og udfordrende. Forhåbenligt også sjovt at rode med.
+
+Der henvises til holdet Brunnerne's writeup, der giver god beskrivelse af løsning og de løste opgaven som tænkt.
+
+Løsning:
+Opgaven er tænkt som 4 steps man skal igennem før man kommer til flaget.
+
+---------------
+Step 1
+---------------
+Opdage at filen ikke kan åbnes normalt. Herefter undersøges fileheader der består af 100 bytes ud fra dokumentation på nettet.
+
+#Gennemgår man filen med carving tools alene, så kan man ikke løse opgaven og finder kun billederne gemt i databasen samt zipfilen. Der er også en del rester fra forskellige formater jeg prøvede at gemme billederne i undervejs ved oprettelsen af opgaven.
+
+Man opdager ud fra dokmentationen at pagesize er blevet sat til 00 00. Dette må løses før man kan åbne filen normalt. Jeg havde overvejet at ændre pagesize til et andet validt format, så som 0x200 (decimal 512) som stadig ville gøre at databsen ikke kunne åbnes, men første step skulle være hurtigt at gennemskue.
+
+Man kan få pagesize, som er i hex, ved at tage filstørrelse og dele med antal pages databasen indeholder. Antal pages oplyses i header på offset 28 og 2 bytes.
+
+Pagesize bytes ændres i SQLite header til hex 10 00  (offset 16 - 2 bytes). Decimalværdien for pagesize er 4096. Databasen kan nu åbnes normalt via f.eks. DB browser for SQLite.
+
+
+Ved gennemgang af databasen findes af interesse:
+1) En pakket fil i tabellen Flag der indeholder tekstfilen "Flagmesterkodeord.txt" i rækken for CTFLand. Den pakkede fil er krypteret og man skal finde kodeordet til denne.
+2) En hjemmebrygget fejl beskrivelse for rækken NC3Land. Her var meningen at hintet "SQLite create table entry..." skulle lede en på sporet af at der skete en fejl ved create table og derved skulle tabeloprettelse i databasen undersøges. Resten i tabellen Flag er bare fyld og skabt for at forvirre hold der bruger strings på filen.
+3) Rensdyrmaskotten Enate ansat af Flagmesternissen. Hintet her er at finde frem til ordlegen med Enate Kong Kat -> KongKatEnate (Concatenate), som har betydning senere til løsning.
+4) Renskyr tabellen var bare fyld for at skabe lidt historie, få folk til at grine af mine ukønne billeder og grund til hvorfor databasen var oprettet.
+
+---------------
+Step 2
+---------------
+Find den skjulte tabel på page 1 i databasen.
+Lige efter de første 100 bytes header for SQLite database kommer en leafpage med information om tabeller i databasen. Da informationer om tabellerne kan være i det resterende frie plads på page1 så anvender databsen pladsen til at lave en lidt mindre leafpage end normalt.
+
+Ved analyse af leafpagen for den interne sqlite_master tabel data, kan det ses at der er 6 cellers data, men der findes 7 pointers.
+Det kan også undre en hvorfor følgende data ses med kolonnenavne og opbygninger som ikke fremgår i det viste data i en DB browser.
+
+tableMetalnfoMetalnfoCREATE TABLE "Metalnfo" (
+	"K0mb1"	INTEGER,
+	"0"	INTEGER,
+	"1"	INTEGER,
+	"2"	INTEGER,
+	"3"	INTEGER,
+	"4"	INTEGER,
+	"5"	INTEGER,
+	"6"	INTEGER,
+	"7"	INTEGER,
+	"8"	INTEGER,
+	"9"	INTEGER
+
+Ændre antal celler der skal læses i header på page 1 leftable efter SQLite headeren. Skal ændres fra 06 til 07. Det er på offset 0x68 i page 1.
+Gøres dette, så kan man nu se den manglende tabel "Metalnfo". Tæt på navnet MetaInfo. Grunden for navnet var, at man ikke nemt ville opdage tabelnavnet via strings på filen.
+
+#ekstra info:
+Jeg fjernede med vilje indice tabeler ved oprettelsen af databasen for at gøre det mere simpelt at overskue sqlite_master tabellens data.
+For de interesserede kan man køre følgende sqlite sætning for at se data fra tabellen: select * from sqlite_master
+Man kan også se at der mangler tabeller når man kigger på rowIDs for tabellen. Den tabel der mangler har rowid 6.
+Jeg ved ikke hvor tabel 4 blev af, men den er der ikke mere.
+
+
+---------------
+Step 3
+---------------
+Hint: Hint findes i maskot tabellen. Enate-Kong-Kat = Concatenate.
+#At lave et hint for concatenate var ikke det nemmeste og derfor blev det ordlegen. Der var tænkt på at lave et billede eller tekst.
+
+Find ud af at der mangler en rigtig refence til en tabelrække i tabellen "Metalnfo". Dette kan gøres ved at opdage at 2 rækker er identiske eller ved at få rowid for hver række vist.
+Viser man rowid kan man se at række 4 fremgår 2 gange og række 12 mangler. Efter at have løst step 2 så vil analyse af antal cellers data og pointers igen være relevant.
+
+Ved analyse af pointers kan man se at der er 2 pointers der peger på samme offset, som fører til data for række 4.
+Man kan manuelt finde række 12's celledata i pagen og indsætte den i pointer 12's plads.
+Række 12's data starter på offset 0E 2D i pagen. 
+
+Jeg gjorde det lidt nemmere, så hvis man kigger på freeblock data i leaf page header (offset 1 og 2 bytes), så kan man se at der referes til frit område på offset 0E 2D. Dette er det samme som starten på den manglende række.
+
+Rettes pointer for række 12 så kan man nu se den manglede række.
+
+#ekstra info:
+Tabellen "Metalnfo" blev skabt efter at have tænkt på mulige måder folk ville kunne løse opgaven på ved brug af programmer til fortolkning af diverse data.
+Jeg vidste hvad koden til zipfilen skulle være og ved at splitte koden op i mindre stykker og genbruge nogle stykker, så var det at bruge concatenate samt en rækkefølgeorden for concatenate rækkenfølgen. Dermed var det ikke nemt for automatiske programmer at løse opgaven.
+Jeg fandt ud af at en række ikke var nok i tabellen hvis opgaven skulle være svær, så det blev til 19 rækkers random data ud fra opbygningen af stilen for kodeordet.
+Jeg indsatte også tilfældig data, inkl i den rigtige række, i nogle kolonner som ikke var del af concatenate rækkenfølgen. Der var dog 1 rækkes data hvor der ikke var fyld til at hjælpe med forståelsen til fortolkningen af kombi kolonnens information.
+Dette ville måske være for nemt for nogle at gennemskue ud fra det givne hint også, så derfor blev step 3 lavet.
+
+---------------
+Step 4
+---------------
+Nu kan kombination fundet i Kombi kolonnens concatenate rækkenfølge bruges på række 12. Kombinationen skal ses som en concatenate af tabelnumre for rækkedata.
+
+Man vil så få 24122412241224122412, der er juleaften 5 gange. Dette skulle gerne gøre det tydeligt at man nu har det rigtige kodeord.
+Det var juleaften 5 gange så man ikke kunne bruteforce zipfilen på kort tid.
+
+Inde i zipfilen er et tekstdokument med flaget.
+Flaget er : 
+NC3{Splitte_mit_sqlite_julerod_du_er_sej}
+
+
+---------------
+#ekstra info
+
+I databasefilen kan man se de tidligere versioner af billeder jeg indsatte for rensdyr. Disse filer fyldte dog for meget så billederformatet blev ændret og sat ind igen. Dette skabte en masse tilfældige red herrings uden det var hensigten.
+
+
+
+
+
+
+

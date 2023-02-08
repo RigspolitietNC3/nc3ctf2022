@@ -55,6 +55,54 @@ Sparenissen
 https://nissen96.github.io/CTF-writeups/writeups/2022/NC3-CTF-2022/Sparenissen.html
 
 
+## Fra The 3 Bricketeers
+https://github.com/LEGO/nc3ctf2022-bricketeers
+
+Nisseinput
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/Web/NisseInput/README.md
+
+Nisseinput2
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/Web/NisseInput2/README.md
+
+Sæt dig
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/Web/SaetDig/README.md
+
+Nissekode
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/Web/Nissekode/README.md
+
+Sidste chance
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/Web/SidsteChance/README.md
+
+KollisionsNissen
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/Web/Kollisionsnissen/README.md
+
+Den hemmelige besked
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/forensics/den_hemmelige_besked.md
+
+Det Kinesiske julebrev
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/forensics/det_kinesiske_julebrev.md
+
+Drillenissen
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/forensics/drillenissen.md
+
+Look at this little...
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/stego/look_at_this_little.md
+
+Juledonation
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/bonus/juledonation.md
+
+Kryptonissen vs Drillenissen
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/bonus/KryptonissenVsDrillenissen/README.md
+
+To be xor not to be?
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/reversing/ToBeXorNotToBe/README.md
+
+Banke på
+https://github.com/LEGO/nc3ctf2022-bricketeers/blob/main/reversing/banke-paa/README.md
+
+
+
+
 
 
 
